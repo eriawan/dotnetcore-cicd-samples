@@ -33,17 +33,18 @@ jobs:
     vmImage: 'vs2017-win2016'
 
   steps:
-  - scripts: |
+  - script: |
       echo "Start building Sample Razor in .NETCore 2.1"
       cd src\netcore2.1
       dotnet build SampleAspNetCore2.1.sln
     failOnStderr: true
     displayName: Build Sample Razor in .NET Core 2.1
     
-  - scripts: |
+  - script: |
       echo "Perform dotnet publish SampleRazor"
       cd src\netcore2.1
       dotnet publish --configuration Release SampleRazor\SampleRazor.csproj -o $BUILD_ARTIFACTSTAGINGDIRECTORY
     displayName: Publish SampleRazor
 
   - task: PublishBuildArtifacts@1
+    displayName: Publish SampleRazor artifact
