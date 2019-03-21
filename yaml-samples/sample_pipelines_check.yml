@@ -1,0 +1,28 @@
+jobs:
+- job: DockerCheck
+  pool:
+    vmImage: 'vs2017-win2016'
+
+  steps:
+  - script: |
+      docker version
+    displayName: VS2017-WIN2016 agent Check Docker tool version
+  - script: |
+      docker image ls -a 
+    displayName: check the last update date of the available docker images
+
+- job: VS2017ToolingCheck
+  dependsOn: DockerCheck
+  pool:
+    vmImage: 'vs2017-win2016'
+
+  steps:
+  # - task: MSBuild@1
+  #   displayName: Check MSBUILD installed version and also build a sample NETFX 4.7.1 solution 
+  #   solution: $(Build.SourcesDirectory)\src\NETFramework4.7\NETFx4.7.SampleSolution\NETFx4.7.SampleSolution.sln
+  #   msbuildArguments: /t:Clean
+
+  - script: |
+      echo "executing dotnet --info"
+      dotnet --info
+    displayName: Check the availability of .NET Core SDK installed in the agents
