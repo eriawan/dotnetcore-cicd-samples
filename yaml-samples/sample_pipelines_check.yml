@@ -43,7 +43,7 @@ jobs:
   - script: |
       echo "Perform dotnet publish SampleRazor"
       cd src\netcore2.1
-      dotnet publish --configuration Release SampleRazor\SampleRazor.csproj -o $BUILD_ARTIFACTSTAGINGDIRECTORY
+      dotnet publish --configuration Release SampleRazor\SampleRazor.csproj -o $(Build.ArtifactStagingDirectory)
     displayName: Publish SampleRazor
 
   - task: PublishBuildArtifacts@1
