@@ -27,7 +27,7 @@ jobs:
       dotnet --info
     displayName: Check the availability of .NET Core SDK installed in the agents
 
-- job: DotnetCoreBuild
+- job: DotnetCoreBuild2_1
   dependsOn: VS2017ToolingCheck
   pool:
     vmImage: 'vs2017-win2016'
@@ -48,3 +48,31 @@ jobs:
 
   - task: PublishBuildArtifacts@1
     displayName: Publish SampleRazor artifact
+
+- job: DotnetCoreBuild3_0
+  dependsOn: DotnetCoreBuild2_1
+  pool:
+    vmImage: 'windows-2019'
+
+  steps:
+  - task: UseDotNet@2
+    displayName: 'Use .NET Core sdk'
+    inputs:
+      packageType: sdk
+      version: 3.0.100
+
+  - script: |
+      echo "Start building Sample Razor in .NETCore 2.1"
+      cd src\netcore3.0
+      dotnet build SampleNetCore3.0.sln
+    failOnStderr: true
+    displayName: Build Sample Windows Desktop in .NET Core 3.0
+    
+  - script: |
+      echo "Perform dotnet publish SampleRazor"
+      cd src\netcore3.0
+      dotnet publish --configuration Release NetCore3.WinForms\NetCore3.WinForms.csproj -o $(Build.ArtifactStagingDirectory)
+    displayName: Publish SampleNetCore3.0
+
+  - task: PublishBuildArtifacts@1
+    displayName: Publish SampleNetCore3.0 artifact
