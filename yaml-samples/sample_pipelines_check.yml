@@ -43,14 +43,14 @@ jobs:
   - script: |
       echo "Perform dotnet publish SampleRazor"
       cd src\netcore2.1
-      dotnet publish --configuration Release SampleRazor\SampleRazor.csproj -o $(Build.ArtifactStagingDirectory)
+      dotnet publish --configuration Release SampleRazor\SampleRazor.csproj -o $(Build.ArtifactStagingDirectory)\netcore2.1
     displayName: Publish SampleRazor
 
   - task: PublishBuildArtifacts@1
     displayName: Publish SampleRazor artifact
 
 - job: DotnetCoreBuild3_0
-  dependsOn: DotnetCoreBuild2_1
+  dependsOn: VS2017ToolingCheck
   pool:
     vmImage: 'windows-2019'
 
@@ -62,17 +62,23 @@ jobs:
       version: 3.0.100
 
   - script: |
-      echo "Start building Sample Razor in .NETCore 2.1"
+      echo "Start building SampleNetCore3.0 in .NETCore 3.0"
       cd src\netcore3.0
       dotnet build SampleNetCore3.0.sln
     failOnStderr: true
     displayName: Build Sample Windows Desktop in .NET Core 3.0
     
   - script: |
-      echo "Perform dotnet publish SampleRazor"
+      echo "Perform dotnet publish SampleNetCore3.0 WinForms"
       cd src\netcore3.0
-      dotnet publish --configuration Release NetCore3.WinForms\NetCore3.WinForms.csproj -o $(Build.ArtifactStagingDirectory)
-    displayName: Publish SampleNetCore3.0
+      dotnet publish --configuration Release NetCore3.WinForms\NetCore3.WinForms.csproj -o $(Build.ArtifactStagingDirectory)\netcore3.0\winforms
+    displayName: Publish SampleNetCore3.0 Winforms
+
+  - script: |
+      echo "Perform dotnet publish SampleNetCore3.0 WinForms"
+      cd src\netcore3.0
+      dotnet publish --configuration Release NetCore3.WinForms\NetCore3.WinForms.csproj -o $(Build.ArtifactStagingDirectory)\netcore3.0\wpf
+    displayName: Publish SampleNetCore3.0 WPF
 
   - task: PublishBuildArtifacts@1
     displayName: Publish SampleNetCore3.0 artifact
