@@ -15,6 +15,7 @@ namespace NetCore3.WinForms
         public Form1()
         {
             InitializeComponent();
+            MessageBox.Show("Hallo MUGI");
         }
 
     }
